@@ -1,0 +1,57 @@
+<% provide(:title, "記事詳細") %>
+<%= render 'articles/head'%>
+  <div class="container">
+	<h1>詳細</h1>
+    <div class="col-md-4">
+		<%= attachment_image_tag @article, :image, size: '400x400', fallback: "logo.jpg" %>
+		<div class="thumbnail">
+			<% @article.articleimages.each do |article_image| %>
+				<%= attachment_image_tag article_image, :image, size: '100x100' %>
+			<% end %>
+		</div>
+	</div>
+    <div class="col-md-1"></div>
+        <div class="col-md-6" style="text-align: center">
+          <p>タグ</p>
+        	<div><% @article.genre_list.each do |tag| %>
+        		<%= link_to tag, articles_path,  class: 'btn btn-warning' %>
+        		<% end %>
+        	</div>
+    		    <p>カテゴリー</p>
+                <div class="category" >
+                 	<%= link_to @article.category.name,category_path(@article.category),class: 'btn btn-success '%>
+		        </div>
+	              <p>お店の名前</p>
+				  <div class="well ">
+				  	<%= @article.shop_name %>
+				  </div>
+				   <p>お店の住所</p>
+	              <div class="well ">
+					<%= @article.store_address %>
+				  </div>
+				   <p>紹介文</p>
+				  <div class="well well-lg">
+					<%= @article.caption %>
+				  </div>
+				  <p>投稿時間：<%= @article.created_at.strftime('%Y年%m月%d日 %H:%M:%S') %></p>
+				  <% if current_user.id == @article.user_id %>
+			  		<%= link_to '編集', edit_article_path(@article), class: 'btn btn-info btn-lg btn-block' %>
+			  	  <% end %>
+			  		<p>投稿者：<%= link_to user_path(@article.user.id) do %>
+			  			<%= @article.user.name %>さん</p>
+			  			<% end %>
+			  		<%= social_share_button_tag(@article) %>
+
+					<%= render 'articles/favorite'%>
+
+					<%= form_for [@article, @article_comment] do |f| %>
+					            <%= f.text_field :comment,placeholder: "コメントをここに",class:'form-control' %>
+					    <%= f.submit "送信する", class: "btn btn-lg btn-base-1 mt-20 pull-right" %>
+					<% end %>
+	        </div>
+		</div>
+	</div>
+
+<%= render 'articles/footer'%>
+
+

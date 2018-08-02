@@ -1,0 +1,50 @@
+<%= render 'articles/head'%>
+
+<%if logged_in?%>
+  <%= link_to 'ログアウト', logout_path %>
+  <% else %>
+<!--   <%= link_to 'Twitterでログイン', '/auth/twitter' %>-->
+ <% end %>
+
+
+<%= render 'articles/top_slide'%>
+
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-xs-2">
+          <h4 style="text-align: center;"> カテゴリー</h4>
+			<% @categories.each do |category| %>
+			  <div class="category" style="margin-top: 10px;">
+			  		<%= link_to category.name, category_path(category),class: 'btn btn-success btn-lg btn-block' %>
+			  </div>
+			<% end %>
+		</div>
+		<div class="col-lg-10">
+			<div style="margin: 20px; text-align: center;">
+				<% @article.each do |article| %>
+		           <div class="col-md-4">
+						<%= link_to article_path(article.id) do %>	
+						<%= attachment_image_tag article, :image, size: '250x250' , fallback: "logo.jpg"%>
+				        <% end %>
+					    <p>店舗名：<%= article.shop_name %></p>
+						<p>場所：<%= article.store_address %></p>
+						<p>投稿者：<%= link_to user_path(article.user.id) do %>
+						        	<%= article.user.name%>
+						        	<% end %>さん</p>
+						<p>投稿時間：<%= article.created_at.strftime('%Y年%m月%d日 %H:%M:%S') %></p>
+						<p>#<% article.genre_list.each do |tag| %>
+			              <%= link_to tag, tags_path(search:tag),  class: 'label label-primary' %>
+			              <% end %></p>
+					</div>
+				<% end %>
+			</div>
+			  
+		</div>
+    </div>
+    <div class="row" style="text-align: center;">
+			  	<%= paginate @article %>
+	</div>
+</div>
+
+<%= render 'articles/footer'%>

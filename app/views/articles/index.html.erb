@@ -1,0 +1,42 @@
+<%= render 'articles/head'%>
+
+<% if @user.present? %>
+  <h1><%= @user.name %>さんの記事一覧</h1>
+<% else %>
+  <h1>全ユーザーの記事一覧</h1>
+<% end %>
+
+
+<table class="table table-striped table-bordered table-hover">
+  <thead>
+    <tr>
+      <th>写真</th>
+      <th>投稿者</th>
+      <th>店舗名</th>
+      <th>住所 </th>
+      <th>内容</th>
+      <th>タグ</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+<% @articles.each do |article| %>
+      <tr>
+      	<td> <%= link_to article_path(article.id) do %>
+	      	 <%= attachment_image_tag article, :image, size: '150x150', fallback: "logo.jpg" %>
+	        <% end %>
+        <td><%= link_to user_path(article.user.id) do %>
+        	<%= article.user.name %>
+        	<% end %>
+        <td><%= article.shop_name %></td>
+        <td><%= article.store_address %></td>
+        <td><%= article.caption %></td>
+        <td><%= article.tag_list %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+<%= render 'articles/footer'%>

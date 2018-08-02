@@ -1,0 +1,34 @@
+<% provide(:title, "カテゴリ別") %>
+<%= render 'articles/head'%>
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-xs-2">
+		  <h4 style="text-align: center;"> カテゴリー</h4>
+			<% @categories.each do |category| %>
+			  <div class="category" style="margin-top: 10px;">
+			  		<%= link_to category.name, category_path(category),class: 'btn btn-success btn-lg btn-block' %>
+			  </div>
+			<% end %>
+		</div>
+
+		<div class="col-xs-9" style="margin: 20px;">
+			<% @article.each do |article| %>
+		        <div class="col-md-4" style="text-align: left;">
+		      	  <%= link_to article_path(article.id) do %>
+					<%= attachment_image_tag article, :image, size: '150x150' , fallback: "logo.jpg"%>
+			        <% end %>
+				    <p class="category">店舗名：<%= article.shop_name %></p>
+				    <p class="category">場所：<%= article.store_address %></p>
+				    <p class="category">内容：<%= article.caption %></p>
+				    <p class="category">#<% article.genre_list.each do |tag| %>
+				          <%= link_to tag, tags_path(search:tag),  class: 'label label-primary' %></p>
+				    <% end %>
+		        </div>
+		    <% end %>
+		</div>
+	</div>
+		<div class="row" style="text-align: center;">
+			  	<%= paginate @articles %>
+		</div>
+</div>

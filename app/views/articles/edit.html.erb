@@ -1,0 +1,63 @@
+<% provide(:title, "投稿編集") %>
+<%= render 'articles/head'%>
+<br>
+<div class="container">
+  <div class="row">
+    <div class="col-md-4">
+      <%= attachment_image_tag @article, :image, size: '400x400', fallback: "logo.jpg" %>
+        <% @article.articleimages.each do |article_image| %>
+        <%= attachment_image_tag article_image, :image, size: '150x150' %>
+        <% end %>
+    </div>
+        <div class="col-lg-2"></div>
+        <div class="col-md-5">
+            <%= form_for(@article) do |f| %>
+               <div class="field">
+                  <%= f.label :genre_list, "#タグ" %><br>
+                  <%= text_field_tag 'article[genre_list]', @article.genre_list.join(',') ,"data-role" => "tagsinput",placeholder: "例）#肉、#ケーキ", class: "form-control" %>
+                </div>
+                <%= f.label :"カテゴリー" %><br>
+                 <%= f.collection_select :category, Category.all, :id, :name  %>
+
+                <h4>店舗名</h4>
+                <%= f.text_field :shop_name,class:'form-control' %>
+
+                <h4>住所(都道府県)</h4>
+                <%= f.text_field :store_address,class:'form-control' %>
+                <p>Topに掲載する画像</p>
+                <img id="img_prev" width=300 height=300 src="#" class="img-thumbnail hidden"/>
+                <%= f.file_field :image, :id => 'article_img' %>
+                <script type="text/javascript">
+                  $(function() {
+                    function readURL(input) {
+                      if (input.files && input.files[0]) {
+                        var reader = new FileReader();
+
+                        reader.onload = function (e) {
+                          $('#img_prev').attr('src', e.target.result);
+                        }
+                        reader.readAsDataURL(input.files[0]);
+                      }
+                    }
+
+                    $("#article_img").change(function(){
+                      $('#img_prev').removeClass('hidden');
+                      readURL(this);
+                    });
+                  });
+                </script><br>
+
+                <p>追加の場合はこちら</p>
+                <%= f.attachment_field :articleimages_images,multiple: true %>
+                <h4>コメント</h4>
+                <%= f.text_area :caption,class:'form-control' %>
+                <br><br><br>
+
+                <%= f.submit '更新',class:'col-lg-12 btn btn-primary' %>
+
+            <% end %>
+        </div>
+  </div>
+</div><br><br><br><br>
+
+<%= render 'articles/footer'%>

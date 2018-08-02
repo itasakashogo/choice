@@ -1,0 +1,60 @@
+<%= render 'articles/head'%>
+<div class="container" >
+  <div class="row">
+
+
+
+      <div class="col-lg-3">
+      <h2><%= @user.name %>さんの<br>マイページ</h2>
+
+        <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+        <%= devise_error_messages! %>
+      </div>
+      <div class="col-lg-6">
+        <div class="form-group has-icon">
+            <div class="user-edit-image">
+                <%= attachment_image_tag @user, :profile_image, :fill, 60, 60, class: "img-circle profile-thumb", fallback: "No-image.jpg"%>
+            </div>
+               <label class="control-label sr-only" for="inputEmail">ProfileImage</label>
+                <%= f.attachment_field :profile_image, placeholder: "プロフィール画像", class: "user-edit-form" %>
+             <div class="field">
+                <%= f.label :アカウント名 %><br />
+                <%= f.text_field :name, autofocus: true, autocomplete: "name",class:'form-control' %>
+              </div><br>
+
+              <div class="field">
+                <%= f.label :メールアドレス %><br />
+                <%= f.email_field :email, autofocus: true, autocomplete: "email",class:'form-control' %>
+              </div><br>
+
+              <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+                <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+              <% end %>
+
+              <div class="field">
+                <%= f.label :パスワード %> <i>(変更したくない場合は空欄にしてください)</i><br />
+                <%= f.password_field :password, autocomplete: "off",placeholder: "6文字以上",class:'form-control' %>
+              </div><br>
+
+              <div class="field">
+                <%= f.label :確認のためもう一度入力してください %><br />
+                <%= f.password_field :password_confirmation, autocomplete: "off",class:'form-control' %>
+              </div><br>
+
+              <div class="field">
+                <%= f.label :現在のパスワード %> <i>(変更を確認するために現在のパスワードが必要です)</i><br />
+                <%= f.password_field :current_password, autocomplete: "off",class:'form-control' %>
+              </div><br>
+
+              <div class="actions">
+                <%= f.submit "更新",class:'col-lg-12 btn btn-primary' %>
+              </div><br><br><br><br>
+            <% end %>
+        </div>
+          <h4>退会</h4>
+
+      <%= button_to "アカウントをなくす", registration_path(resource_name), data: { confirm: "本当に退会しますか?" }, method: :delete,class:'col-lg-8 btn btn-danger' %><br><br><br>
+
+  </div>
+</div>
+
